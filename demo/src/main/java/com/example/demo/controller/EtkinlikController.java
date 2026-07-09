@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/etkinlikler")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")// Frontend bağlanırken CORS hatası almamak için ekledik
+@CrossOrigin(origins = "http://localhost:5173")// Frontend bağlanırken CORS hatası almamak için ekledik
 public class EtkinlikController {
     private final EtkinlikService etkinlikService;
 
