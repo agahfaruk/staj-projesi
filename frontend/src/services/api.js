@@ -24,7 +24,23 @@ export const createDuyuru = async (formData) => {
     return response.data;
 };
 
-// 4. İçerik Silme
+// 4. Haber güncelleme
+export const updateHaber = async (id, formData) => {
+    const response = await axios.put(`${API_URL}/haber/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+};
+
+// 5. Duyuru güncelleme
+export const updateDuyuru = async (id, formData) => {
+    const response = await axios.put(`${API_URL}/duyuru/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+};
+
+// 6. İçerik Silme
 export const deleteEtkinlik = async (id) => {
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data;

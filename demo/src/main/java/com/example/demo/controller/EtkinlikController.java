@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -48,7 +47,29 @@ public class EtkinlikController {
         return ResponseEntity.ok(etkinlikService.duyuruEkle(konu, icerik, tarih, resim));
     }
 
-    //4 Etkinlik silme (DELETE)
+    //4 Haber güncelleme (PUT)
+    @PutMapping("/haber/{id}")
+    public ResponseEntity<Haber> haberGuncelle(
+            @PathVariable Long id,
+            @RequestParam String konu,
+            @RequestParam String icerik,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate tarih,
+            @RequestParam String link){
+        return ResponseEntity.ok(etkinlikService.haberGuncelle(id, konu, icerik, tarih, link));
+    }
+
+    //5 Duyuru güncelleme (PUT)
+    @PutMapping("/duyuru/{id}")
+    public ResponseEntity<Duyuru> duyuruGuncelle(
+            @PathVariable Long id,
+            @RequestParam String konu,
+            @RequestParam String icerik,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate tarih,
+            @RequestParam(required = false) MultipartFile resim){
+        return ResponseEntity.ok(etkinlikService.duyuruGuncelle(id, konu, icerik, tarih, resim));
+    }
+
+    //6 Etkinlik silme (DELETE)
     @DeleteMapping("/{id}")
     public ResponseEntity<String> sil(@PathVariable Long id){
         etkinlikService.sil(id);

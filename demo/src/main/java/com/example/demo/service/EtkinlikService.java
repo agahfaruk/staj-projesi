@@ -50,4 +50,40 @@ public class EtkinlikService {
     public void sil(Long id){
         repository.deleteById(id);
     }
+
+    public Haber haberGuncelle(Long id, String konu, String icerik, LocalDate tarih, String link) {
+        Etkinlik etkinlik = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Etkinlik bulunamadi. ID= " + id));
+
+        if (!(etkinlik instanceof Haber haber)) {
+            throw new RuntimeException("Bu ID bir haber kaydi degil. ID= " + id);
+        }
+
+        haber.setKonu(konu);
+        haber.setIcerik(icerik);
+        haber.setGecerlilikTarihi(tarih);
+        haber.setHaberLinki(link);
+        return repository.save(haber);
+    }
+
+    public Duyuru duyuruGuncelle(Long id, String konu, String icerik, LocalDate tarih, MultipartFile resimDosyasi) {
+        Etkinlik etkinlik = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Etkinlik bulunamadi. ID= " + id));
+
+        if (!(etkinlik instanceof Duyuru duyuru)) {
+            throw new RuntimeException("Bu ID bir duyuru kaydi degil. ID= " + id);
+        }
+
+        duyuru.setKonu(konu);
+        duyuru.setIcerik(icerik);
+        duyuru.setGecerlilikTarihi(tarih);
+
+        // Yeni resim geldiyse kaydedip mevcut görseli günceller
+        if (resimDosyasi != null && !resimDosyasi.isEmpty()) {
+            String kaydedilenIsim = fileStorageService.saveImage(resimDosyasi);
+            duyuru.setResim(kaydedilenIsim);
+        }
+
+        return repository.save(duyuru);
+    }
 }
